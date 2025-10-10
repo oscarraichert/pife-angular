@@ -23,7 +23,7 @@ export class AuthService {
         localStorage.setItem('jwt', jwtToken);
     }
 
-    public logout() {
+    public clearToken() {
         localStorage.removeItem('jwt');
     }
 }
