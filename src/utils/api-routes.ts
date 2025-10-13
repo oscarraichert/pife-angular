@@ -1,7 +1,9 @@
 import { environment } from "../environments/environment";
 
 export class ApiRoutes {
-    private static _baseUrl = environment.apiUrl;
+    private static _authBaseUrl = environment.authApiUrl;
+    
+    private static _pifeBaseUrl = environment.pifeApiUrl;
 
-    static login = this._baseUrl + "/login";
+    static login = this._authBaseUrl + "/login";
 }

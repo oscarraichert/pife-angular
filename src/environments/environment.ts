@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:5165"
+  authApiUrl: "http://localhost:5165",
+  pifeApiUrl: "http://localhost:5296",
 };
