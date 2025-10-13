@@ -1,2 +1,7 @@
 <button (click)="handleLogout()">Logout</button>
-<p>home works!</p>
+
+@for (item of roomIds; track $index) {
+    <li>{{ item }}</li>
+} @empty {
+    <li>No game rooms</li>
+}

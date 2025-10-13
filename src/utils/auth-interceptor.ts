@@ -21,6 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      debugger
       if (error.status === 401) {
         auth.clearToken();      
         router.navigate([AppRoutes.login]); 

@@ -6,4 +6,6 @@ export class ApiRoutes {
     private static _pifeBaseUrl = environment.pifeApiUrl;
 
     static login = this._authBaseUrl + "/login";
+
+    static listRooms = this._pifeBaseUrl + "/rooms"
 }
