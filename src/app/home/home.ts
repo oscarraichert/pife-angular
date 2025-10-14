@@ -1,39 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AppRoutes } from '../../utils/app-routes';
 import { GameService } from '../../services/game.service';
+import { interval, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrls: ['./home.css'] // note: styleUrls (plural)
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
+
+  roomIds: string[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private gameService: GameService,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  roomIds: string[] = [];
-
-  ngOnInit(): void {
-    this.getRooms();
+  ngOnInit() {
+    interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.gameService.getRooms()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: rooms => {
+          this.roomIds = rooms;
+          this.cdr.detectChanges();
+        },
+        error: err => console.error(err)
+      });
   }
 
-  public handleLogout() {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  handleLogout() {
     this.authService.clearToken();
     this.router.navigate([AppRoutes.login]);
   }
 
-  public getRooms() {
-    this.gameService.getRooms().subscribe({
-      next: value => this.roomIds = value,
-      error: err => console.log(err),
-    });
+  handleCreateRoom() {
+    this.gameService.createRoom();
   }
 }
-

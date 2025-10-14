@@ -1,5 +1,7 @@
 <button (click)="handleLogout()">Logout</button>
 
+<button (click)="handleCreateRoom()">Create Room</button>
+
 @for (item of roomIds; track $index) {
     <li>{{ item }}</li>
 } @empty {
