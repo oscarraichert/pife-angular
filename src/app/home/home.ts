@@ -8,7 +8,7 @@ import { interval, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
-  styleUrls: ['./home.css'] // note: styleUrls (plural)
+  styleUrls: ['./home.css'] 
 })
 export class Home implements OnInit, OnDestroy {
 
