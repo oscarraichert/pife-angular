@@ -1,0 +1,9 @@
+<label for="message"></label>
+<input id="message" type="text" [formControl]="chatMessage">
+<button (click)="handleSendMessage()">Send</button>
+
+<ul>
+    @for (item of chatMessages; track $index) {
+    <li>{{item}}</li>
+    }
+</ul>

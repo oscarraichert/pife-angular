@@ -55,5 +55,6 @@ export class Home implements OnInit, OnDestroy {
 
   handleSelectRoom(roomId: string) {
     this.gameService.joinRoom(roomId);
+    this.router.navigate([AppRoutes.gameRoom + roomId]);
   }
 }
