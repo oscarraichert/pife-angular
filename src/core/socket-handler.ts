@@ -11,4 +11,8 @@ export class SocketHandler {
             console.log("Message from server ", event.data);
         });
     }
+
+    public disconnect() {
+        this.socket?.close();
+    }
 }

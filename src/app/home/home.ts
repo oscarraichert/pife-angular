@@ -45,10 +45,15 @@ export class Home implements OnInit, OnDestroy {
 
   handleLogout() {
     this.authService.clearToken();
+    this.gameService.leaveRoom();
     this.router.navigate([AppRoutes.login]);
   }
 
   handleCreateRoom() {
     this.gameService.createRoom();
+  }
+
+  handleSelectRoom(roomId: string) {
+    this.gameService.joinRoom(roomId);
   }
 }

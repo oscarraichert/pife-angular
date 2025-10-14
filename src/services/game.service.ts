@@ -4,6 +4,7 @@ import { ApiRoutes } from "../utils/api-routes";
 import { Observable } from "rxjs";
 import { SocketHandler } from "../core/socket-handler";
 import { AuthService } from "./auth.service";
+import { WebSocketRoutes } from "../utils/web-socket-routes";
 
 @Injectable({providedIn: 'root'})
 export class GameService {
@@ -18,6 +19,14 @@ export class GameService {
     }
 
     public createRoom() {
-        this.socketHandler.connect("ws://localhost:5296/ws?access_token=" + this.authService.getToken());
+        this.socketHandler.connect(WebSocketRoutes.baseConnection + this.authService.getToken());
+    }
+
+    public joinRoom(roomId: string) {
+        this.socketHandler.connect(WebSocketRoutes.baseConnection + this.authService.getToken() + "&room_id=" + roomId);
+    }
+
+    public leaveRoom() {
+        this.socketHandler.disconnect();
     }
 }

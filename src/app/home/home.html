@@ -3,7 +3,7 @@
 <button (click)="handleCreateRoom()">Create Room</button>
 
 @for (item of roomIds; track $index) {
-    <li>{{ item }}</li>
+    <li (click)="handleSelectRoom(item)">{{ item }}</li>
 } @empty {
     <li>No game rooms</li>
 }
