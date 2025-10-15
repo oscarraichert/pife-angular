@@ -6,12 +6,15 @@ import { AuthService } from "./auth.service";
 import { WebSocketRoutes } from "../utils/web-socket-routes";
 import { SocketMessage } from "../models/socket-message";
 import { MessageType } from "../models/message-type.enum";
+import { Router } from "@angular/router";
+import { AppRoutes } from "../utils/app-routes";
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private router: Router
   ) { }
 
   private socket: WebSocket | null = null;
@@ -26,6 +29,10 @@ export class GameService {
     this.socket.addEventListener("message", (event) =>
       this.handleMessage(JSON.parse(event.data))
     );
+
+    this.socket.addEventListener("close", (event) =>
+      this.disconnect()
+    );
   }
 
   public disconnect() {
@@ -39,7 +46,15 @@ export class GameService {
   private handleMessage(message: SocketMessage) {
     switch (message.MessageType) {
       case MessageType.ChatMessage:
-        this.addChatMessage(message.Payload!);
+        this.handleChatMessage(message.Payload!);
+        break;
+      
+      case MessageType.NewRoom:
+        this.handleNewRoom(message);
+        break;
+
+      case MessageType.JoinRoom:
+        this.handleJoinedRoom(message);
         break;
 
       default:
@@ -47,7 +62,15 @@ export class GameService {
     }
   }
 
-  private addChatMessage(message: string) {
+  private handleNewRoom(message: SocketMessage) {
+    this.router.navigate([AppRoutes.gameRoom + message.Payload]);
+  }
+
+  private handleJoinedRoom(message: SocketMessage) {
+    console.log(message);
+  }
+
+  private handleChatMessage(message: string) {
     this.messages.push(message);
     this.chatMessagesSubject.next([...this.messages]); 
   }
