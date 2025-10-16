@@ -30,7 +30,7 @@ export class GameService {
       this.handleMessage(JSON.parse(event.data))
     );
 
-    this.socket.addEventListener("close", (event) =>
+    this.socket.addEventListener("close", () =>
       this.disconnect()
     );
   }
